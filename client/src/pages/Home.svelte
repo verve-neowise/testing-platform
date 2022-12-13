@@ -1,18 +1,16 @@
 <script lang="ts">
+    import { navigate } from "svelte-navigator"
     import TaskItem from "../components/Task.svelte";
     import type { Task } from "../http/models";
-    import { authStore } from "../stores/auth.store";
+    import { authStore, setAuth } from "../stores/auth.store";
     import { httpAllTasks } from "../http/tasks.http"
 
     let tasks: Task[] = []
     let error: string | null = null
     let isLoading: boolean = false
 
-    console.log(isLoading);
-
     function allTasks() {
         isLoading = true
-        console.log(isLoading);
         
         httpAllTasks().subscribe(result => {
             if (result.status == 'error') {
@@ -28,6 +26,11 @@
         })
     }
 
+    function logout() {
+        setAuth(null)
+        navigate('login')
+    }
+
     allTasks()
 
 </script>
@@ -35,7 +38,11 @@
 <main>
     <header>
         <h1> Verse </h1>
-        <span> {$authStore.username} </span>
+        <div>
+            <span> {$authStore.username} </span>
+            |
+            <button class="sm" on:click={logout}> Log out </button>
+        </div>
     </header>
 
     <div class="task-list">

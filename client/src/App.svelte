@@ -10,15 +10,15 @@
 
 <main>
 	<Router>
-		<Route>
+		<Route path="/">
 			<AuthProtector>
 				<Home/>
 			</AuthProtector>
 		</Route>
-		<Route path="login">
+		<Route path="/login">
 			<Login/>
 		</Route>
-		<Route path="register">
+		<Route path="/register">
 			<Register/>			
 		</Route>
 	</Router>

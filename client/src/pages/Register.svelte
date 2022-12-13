@@ -4,6 +4,9 @@
     import { httpRegister } from "../http/auth.http";
     import { setAuth } from "../stores/auth.store";
 
+    import { navigate } from 'svelte-navigator'
+
+
     let usernameInput: HTMLInputElement
     let passwordInput: HTMLInputElement
     let nameInput: HTMLInputElement
@@ -25,6 +28,7 @@
             isLoading = false
             error = response.status == 'error' ? response.message : null
             setAuth(response.data)
+            navigate('/')
         })
     }
 
