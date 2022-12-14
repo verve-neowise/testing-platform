@@ -12,7 +12,7 @@ type Result = {
     message: string
 }
 
-function test(code: string, cases: Case[]): Result[] | Result {
+export function testCode(code: string, cases: Case[]): Result[] | Result {
     try {
 
         const func: any = eval(code)
@@ -52,7 +52,7 @@ function test(code: string, cases: Case[]): Result[] | Result {
     }
 }
 
-const res = test(`
+const res = testCode(`
     module.exports = function (a, b) {
         return a + b + 1
     }

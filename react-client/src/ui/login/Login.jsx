@@ -31,7 +31,7 @@ function Login() {
     }
 
     return (
-        <main>
+        <main className='center'>
             <form>
                 <h1> Verse </h1>
                 { mutation.isError ? 

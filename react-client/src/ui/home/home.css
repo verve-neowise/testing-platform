@@ -6,8 +6,20 @@ header {
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.10);
 }
 
+.task-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 .task-list {
     width: 60%;
     margin: 0 auto;
     padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

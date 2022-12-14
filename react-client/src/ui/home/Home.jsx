@@ -1,23 +1,36 @@
+import { useQuery } from 'react-query'
+import { useNavigate } from 'react-router-dom'
+import { getTasks } from '../../http/tasks'
+import Navbar from '../common/Navbar'
+import TaskItem from './TaskItem'
 import './home.css'
 
 function Home() {
-    return (
-        <main>
-            <header>
-                <h1> Verse </h1>
-                <div>
-                    <span> Username </span>
-                    |
-                    <button className="sm" > Log out </button>
-                </div>
-            </header>
 
+    const navigate = useNavigate()
+
+    const query = useQuery('tasks', () => getTasks())
+
+    return (
+        <>
+            <Navbar/>
             <div className="task-list">
-                <span className="error"> Error </span>
-                <span>Loading</span>
-                {/* <TaskItem task={item} /> */}
+                {
+                    query.isLoading ? 
+                        <span>Loading</span>
+                    : query.isError ?
+                        <span className="error"> Error </span>
+                    :
+                        query.data.data.tasks.map(task => (
+                            <TaskItem
+                                key={task.id} 
+                                task={task}
+                                onSelect={(task) => navigate('/task/' + task.id)}
+                            />
+                        ))
+                }
             </div>
-        </main>
+        </>
     )
 }
 

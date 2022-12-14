@@ -34,9 +34,8 @@ function Register() {
         mutation.mutate(user)
     }
 
-
     return (
-        <main>
+        <main className='center'>
             <form>
                 <h1> Verse </h1>
                 { mutation.isError ? 
