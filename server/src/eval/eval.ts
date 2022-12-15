@@ -1,12 +1,9 @@
+import { Case } from '@prisma/client'
 import eval from 'eval'
 
-type Case = {
-    name: string,
-    input: string,
-    expect: string
-}
 
 type Result = {
+    caseId: number,
     name: string,
     status: 'success' | 'error',
     message: string
@@ -29,6 +26,7 @@ export function testCode(code: string, cases: Case[]): Result[] | Result {
                 console.log(res);
 
                 return {
+                    caseId: _case.id,
                     name: _case.name,
                     message: expected === res ? 'Successfuly' : `Expected ${expected}, but received ${res}`,
                     status: expected === res ? 'success' : 'error'
@@ -36,6 +34,7 @@ export function testCode(code: string, cases: Case[]): Result[] | Result {
             }
             catch(err: any) {
                 return {
+                    caseId: _case.id,
                     name: _case.name,
                     message: 'Error: ' + err.toString(),
                     status: 'error'
@@ -45,6 +44,7 @@ export function testCode(code: string, cases: Case[]): Result[] | Result {
     }
     catch(err: any) {
         return {
+            caseId: -1,
             name: 'code',
             status: 'error',
             message: err.toString()
@@ -58,9 +58,11 @@ const res = testCode(`
     }
 `, [
     {
+        id: 0,
         input: "{ a: 10, b: 5}",
         expect: "15",
         name: "10 + 5",
+        taskId: 1
     }
 ])
 

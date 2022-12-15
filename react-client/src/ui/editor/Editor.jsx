@@ -1,8 +1,8 @@
 import './editor.css'
 
-import { useQuery } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import { useParams } from "react-router-dom"
-import { getTask } from "../../http/tasks"
+import { getTask, runCode } from "../../http/tasks"
 import Navbar from "../common/Navbar"
 import { useState } from 'react'
 
@@ -12,15 +12,60 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css'; //Example style, you can use another
 import Cases from './Cases'
+import { mapCase, mapCaseWithResult } from '../../models/test-case'
 
 export default function Editor() {
 
     const params = useParams()
 
-    const query = useQuery('task/' + params.id, () => getTask(params.id))
+    const [cases, setCases] = useState([])
+    const [task, setTask] = useState({})
 
     const [code, setCode] = useState('function add(a, b) {\n  return a + b;\n}')
-    const [console, setConsole] = useState('COnsole output')
+    const [terminal, setTerminal] = useState('COnsole output')
+
+    const query = useQuery('task/' + params.id, () => getTask(params.id), {
+        onSuccess: (response) => {
+            setCases(response.data.cases.map(mapCase))            
+            setTask(response.data.task)
+        }
+    })
+
+    const mutation = useMutation('/run', (params) => runCode(params), {
+        onSuccess: (response) => {
+            if (Array.isArray(response.data.result)) {
+                
+                const result = response.data.result
+               
+                console.log(result);
+                
+                setCases(cases => (
+                    cases.map(_case => mapCaseWithResult(
+                        _case, 
+                        result.find(res => res.caseId == _case.id)
+                        )
+                    )
+                ))
+
+                const message = result
+                                    .filter(res => res.status == 'error')
+                                    .reduce((acc, value) => acc + '[' + value.name + ']: ' + value.message, '')
+
+                setTerminal(message)
+            }
+            else {
+                setTerminal(response.data.result.message)
+            }
+        }
+    })
+
+    const run = () => {
+        const params = {
+            taskId: task.id,
+            code
+        }
+        mutation.mutate(params)
+    }
 
     return (
         <div className='editor-layout'>
@@ -41,11 +86,11 @@ export default function Editor() {
                             </p>
                             <hr />
                             <h3> Test cases </h3>
-                            <Cases cases={query.data.data.cases}/>
+                            <Cases cases={cases}/>
 
                         </div>
                         <div className="right">
-                            <button>Run</button>
+                            <button onClick={run}>Run</button>
                             <CodeEditor
                                 value={code}
                                 onValueChange={code => setCode(code)}
@@ -60,7 +105,7 @@ export default function Editor() {
                                 }}
                             />
                             <CodeEditor
-                                value={console}
+                                value={terminal}
                                 highlight={code => highlight(code, languages.js)}
                                 padding={10}
                                 style={{

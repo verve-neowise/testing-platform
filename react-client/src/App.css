@@ -93,3 +93,9 @@ button:focus {
 	padding: 5px;
 	text-align: center;
 }
+
+.success {
+	color: rgba(20, 220, 113, 0.798);
+	padding: 5px;
+	text-align: center;
+}

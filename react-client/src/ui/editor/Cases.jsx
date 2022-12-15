@@ -4,7 +4,15 @@ export default function Cases({cases}) {
         <div className="case-list">
             {
                 cases.map(_case => (
-                    <div className="case">
+                    <div key={_case.id} className="case">
+
+                        {
+                            _case.status == 'error' && <span className="error"> [FAILED] </span>
+                        }
+                        {
+                            _case.status == 'success' && <span className="success"> [PASSED] </span>
+                        }
+
                         <h4>{_case.name}</h4>
                         <span>
                             <b>Input: </b>
