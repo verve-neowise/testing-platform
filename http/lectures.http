@@ -1,0 +1,15 @@
+GET http://localhost:7070/lectures
+
+###
+
+POST http://localhost:7070/lectures
+Content-Type: application/json
+
+{
+    "name": "Data Types",
+    "content": "This is content" 
+}
+
+###
+
+

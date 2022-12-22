@@ -1,34 +1,24 @@
-import { useQuery } from 'react-query'
-import { useNavigate } from 'react-router-dom'
-import { getTasks } from '../../http/tasks'
+import { useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../common/Navbar'
-import TaskItem from './TaskItem'
+import TaskItem from '../common/TaskItem'
 import './home.css'
+import TaskList from '../common/TaskList'
+import Lectures from './Lectures'
 
 function Home() {
 
     const navigate = useNavigate()
-
-    const query = useQuery('tasks', () => getTasks())
+    const { id } = useParams()
 
     return (
         <>
             <Navbar/>
-            <div className="task-list">
-                {
-                    query.isLoading ? 
-                        <span>Loading</span>
-                    : query.isError ?
-                        <span className="error"> Error </span>
-                    :
-                        query.data.data.tasks.map(task => (
-                            <TaskItem
-                                key={task.id} 
-                                task={task}
-                                onSelect={(task) => navigate('/task/' + task.id)}
-                            />
-                        ))
-                }
+            <div className="home-layout">
+                <Lectures id={id}/>
+                <TaskList 
+                    id={id}
+                    onSelect={task => navigate('/task/' + task.id)}
+                />
             </div>
         </>
     )

@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom"
 import { getAuth, storeAuth } from '../../storage/auth'
+import { Link, useNavigate } from 'react-router-dom'
 
-export default function Navbar() {
+export default function Navbar({ title }) {
 
     const auth = getAuth()
 
@@ -14,7 +14,10 @@ export default function Navbar() {
 
     return (
         <header>
-            <h1> Verse </h1>
+            
+            <Link to={'/'}> 
+               <h1> { title ?? 'Verse' } </h1>
+             </Link>
             <div>
                 <span> {auth.username} </span>
                 |

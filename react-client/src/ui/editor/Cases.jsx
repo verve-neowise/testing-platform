@@ -1,9 +1,9 @@
-export default function Cases({cases}) {
+export default function Cases({cases, onDelete}) {
 
     return (
         <div className="case-list">
             {
-                cases.map(_case => (
+                cases.map((_case, index) => (
                     <div key={_case.id} className="case">
 
                         {
@@ -23,6 +23,10 @@ export default function Cases({cases}) {
                             <b>Expect: </b>
                             {_case.expect}
                         </span>
+
+                        {
+                            onDelete && <button className="sm" onClick={() => onDelete(index)}>Delete</button>
+                        }
                     </div>
                 ))
             }

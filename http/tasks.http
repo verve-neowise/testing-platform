@@ -1,12 +1,14 @@
-GET http://localhost:7070/tasks HTTP/1.1
+
+
+GET http://localhost:7070/lectures/1/tasks
 
 ### 
 
-GET http://localhost:7070/tasks/1 HTTP/1.1
+GET http://localhost:7070/tasks/1
 
 ### 
 
-POST http://localhost:7070/tasks HTTP/1.1
+POST http://localhost:7070/lectures/1/tasks
 Content-Type: application/json
 
 {

@@ -2,7 +2,7 @@ import './editor.css'
 
 import { useMutation, useQuery } from "react-query"
 import { useParams } from "react-router-dom"
-import { getTask, runCode } from "../../http/tasks"
+import { confirmCode, getTask, runCode } from "../../http/tasks"
 import Navbar from "../common/Navbar"
 import { useState } from 'react'
 
@@ -59,12 +59,48 @@ export default function Editor() {
         }
     })
 
+    const confirmMutation = useMutation('/confirm', (params) => confirmCode(params), {
+        onSuccess: (response) => {
+            if (Array.isArray(response.data.result)) {
+                
+                const result = response.data.result
+               
+                console.log(result);
+                
+                setCases(cases => (
+                    cases.map(_case => mapCaseWithResult(
+                        _case, 
+                        result.find(res => res.caseId == _case.id)
+                        )
+                    )
+                ))
+
+                const message = result
+                                    .filter(res => res.status == 'error')
+                                    .reduce((acc, value) => acc + '[' + value.name + ']: ' + value.message, '')
+
+                setTerminal(message)
+            }
+            else {
+                setTerminal(response.data.result.message)
+            }
+        }
+    })
+
     const run = () => {
         const params = {
             taskId: task.id,
             code
         }
         mutation.mutate(params)
+    }
+
+    const confirm = () => {
+        const params = {
+            taskId: task.id,
+            code
+        }
+        confirmMutation.mutate(params)
     }
 
     return (
@@ -90,7 +126,10 @@ export default function Editor() {
 
                         </div>
                         <div className="right">
-                            <button onClick={run}>Run</button>
+                            <div className="right-flex">
+                                <button onClick={run}>Run</button>
+                                <button onClick={confirm}>Confirm</button>                                
+                            </div>
                             <CodeEditor
                                 value={code}
                                 onValueChange={code => setCode(code)}

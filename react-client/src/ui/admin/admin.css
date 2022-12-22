@@ -1,0 +1,42 @@
+.dimmer {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0; 
+    visibility: hidden;
+}
+
+.dimmer.show {
+    visibility: visible;
+}
+
+.modal {
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    height: 100%;
+    display: flex;
+    gap: 40px;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.form-content .case-list {
+    flex: 1;
+    overflow-y: auto;
+}

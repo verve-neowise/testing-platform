@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getAuth } from '../storage/auth'
 
-function AuthProtector({ children }) {
+function AuthProtector({ adminRequired, children }) {
 
     const navigate = useNavigate()
     const auth = getAuth()
@@ -10,7 +10,10 @@ function AuthProtector({ children }) {
     useEffect(() => {
         if (!auth) {
             navigate('/login')
-        }        
+        }     
+        else if (adminRequired && !auth.isAdmin) {
+            navigate('/login')
+        }
     }, [])
 
     if (!auth) {
