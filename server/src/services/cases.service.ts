@@ -28,3 +28,12 @@ export function findCases(taskId: number) {
         }
     })
 }
+
+
+export function deleteCases(taskId: number) {
+    return prisma.case.deleteMany({
+        where: {
+            taskId
+        }
+    })
+}

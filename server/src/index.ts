@@ -4,6 +4,7 @@ import cors from 'cors'
 import users from './users'
 import tasks from './tasks'
 import run from './run'
+import lectures from './lectures'
 
 const app = express()
 
@@ -12,6 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(users)
+app.use(lectures)
 app.use(tasks)
 app.use(run)
 

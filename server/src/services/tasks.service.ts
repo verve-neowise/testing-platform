@@ -5,12 +5,18 @@ const prisma = new PrismaClient()
 export type Task = {
     name: string,
     description: string,
-    content: string
+    content: string,
+    id?: number
+    isComplete?: boolean,
+    solution?: string
 }
 
-export function createTask(task: Task) {
+export function createTask(lectureId: number, task: Task) {
     return prisma.task.create({
-        data: task
+        data: {
+            ...task,
+            lectureId
+        }
     })
 }
 
@@ -23,6 +29,18 @@ export function findTask(id: number) {
     })
 }
 
-export function allTasks() {
-    return prisma.task.findMany()
+export function allTasks(lectureId: number) {
+    return prisma.task.findMany({
+        where: {
+            lectureId
+        }
+    })
+}
+
+export function deleteTask(id: number) {
+    return prisma.task.delete({
+        where: {
+            id
+        }
+    })
 }

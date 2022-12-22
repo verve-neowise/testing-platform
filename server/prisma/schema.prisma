@@ -18,6 +18,8 @@ model User {
   name  String
   group String
 
+  isAdmin Boolean @default(false)
+
   token String
 }
 
@@ -26,6 +28,8 @@ model Task {
   name        String
   description String
   content     String
+
+  lectureId    Int
 }
 
 model Case {
@@ -35,4 +39,17 @@ model Case {
   expect String
 
   taskId Int
+}
+
+model Solution {
+  id          Int    @id @default(autoincrement())
+  userId      Int
+  taskId      Int
+  solution    String
+}
+
+model Lecture {
+  id          Int   @id @default(autoincrement())
+  name        String
+  content     String
 }

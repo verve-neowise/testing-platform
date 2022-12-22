@@ -9,7 +9,7 @@ router.post('/login', async (req, res) => {
     const user = await findUser(username)
 
     if (user) {
-        const { name, id, group, token } = user
+        const { name, id, group, token, isAdmin } = user
 
         if (user.password != password) {
             res.status(403).json({
@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
             res.json({
                 message: 'Successfuly login',
                 user: {
-                    id, name, group, username, token
+                    id, name, group, username, token, isAdmin
                 }
             })
         }
@@ -44,12 +44,12 @@ router.post('/register', async (req, res) => {
         })
     }
     else {
-        const { username, name, id, group, token } = await createUser(dto)
+        const { username, name, id, group, token, isAdmin } = await createUser(dto)
 
         res.json({
             message: 'Successfuly register',
             user: {
-                id, name, group, username, token 
+                id, name, group, username, token , isAdmin
             } 
         })
     }
